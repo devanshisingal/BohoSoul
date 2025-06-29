@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOHO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="hoodie.css">
+  <style>
+
+    .cart-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color: white;
+        width: 300px;
+        height: 100%;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+        z-index: 999;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .cart-items {
+        margin-top: 20px;
+    }
+    .cart-item {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
+    .cart-close {
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .add-to-cart {
+        padding: 10px 15px;
+        background-color: #a7838a;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .add-to-cart:hover {
+        background-color: #ff6600;
+    }
+</style>
+</head>
+<body>
+    <div class="shop-section">
+        <div class="box1 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h1.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 1" data-price="899" data-img="h1.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box2 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h2.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 2" data-price="899" data-img="h2.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box3 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h3.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 3" data-price="899" data-img="h3.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box4 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h4.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 4" data-price="899" data-img="h4.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box5 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h5.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 5" data-price="899" data-img="h5.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box6 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h6.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 6" data-price="899" data-img="h6.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box7 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h7.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 7" data-price="899" data-img="h7.jpg">Add to Cart</button>
+            </div>
+        </div>
+        <div class="box8 box">
+            <div class="box-content">
+                <div class="box-img" style="background-image:url('h8.jpg');"></div>
+                <p>Rs.899/-</p>
+                <button class="add-to-cart" data-name="Hoodie 8" data-price="899" data-img="h8.jpg">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+
+    
+    
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items">
+            
+        </ul>
+        <button onclick="clearCart()">Clear Cart</button>
+    </div>
+    
+    
+    <script>
+        
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.getAttribute('data-name');
+                const productPrice = this.getAttribute('data-price');
+                const productImage = this.getAttribute('data-img');
+    
+               
+                const product = {
+                    name: productName,
+                    price: productPrice,
+                    image: productImage
+                };
+    
+               
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+               
+                cart.push(product);
+    
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+    
+                
+                alert(`${productName} has been added to your cart!`);
+                loadCart(); 
+            });
+        });
+    
+        
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsList = document.getElementById('cart-items');
+            cartItemsList.innerHTML = ''; 
+    
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" width="50" height="50">
+                    <span>${item.name}</span> - Rs.${item.price}
+                `;
+                cartItemsList.appendChild(listItem);
+            });
+        }
+    
+        
+        function clearCart() {
+            localStorage.removeItem('cart');
+            loadCart(); 
+        }
+    
+        
+        window.onload = loadCart;
+       
+    const cartIcon = document.getElementById('cart-icon');
+    const cartContainer = document.getElementById('cart-container');
+    const cartClose = document.getElementById('cart-close');
+    const cartItems = document.getElementById('cart-items');
+
+    // Show cart when the cart icon is clicked
+    cartIcon.addEventListener('click', () => {
+        cartContainer.style.display = 'block';
+        displayCartItems();
+    });
+
+    // Close cart when the close button is clicked
+    cartClose.addEventListener('click', () => {
+        cartContainer.style.display = 'none';
+    });
+
+    // Add to Cart functionality
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productName = button.getAttribute('data-product');
+            const productPrice = button.getAttribute('data-price');
+            addItemToCart(productName, productPrice);
+        });
+    });
+
+    // Function to add item to cart (localStorage)
+    function addItemToCart(productName, productPrice) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const newItem = { name: productName, price: productPrice };
+        cart.push(newItem);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Function to display cart items
+    function displayCartItems() {
+        cartItems.innerHTML = ''; 
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p>Your cart is empty.</p>';
+        } else {
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <p>${item.name} - Rs.${item.price}</p>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
+    </script>
+    </body>
+    </html>
+
+
+
+
+
+</div>
+</body>
+</html>
